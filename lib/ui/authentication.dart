@@ -1,4 +1,7 @@
+import 'package:crypto_wallet/net/flutterfire.dart';
 import 'package:flutter/material.dart';
+
+import 'home_view.dart';
 
 class Authentication extends StatefulWidget {
   const Authentication({ Key? key }) : super(key: key);
@@ -21,8 +24,12 @@ class _AuthenticationState extends State<Authentication> {
           color: Colors.blueAccent,
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextFormField(
+            Container(
+              width: MediaQuery.of(context).size.width / 1.3,
+              child: TextFormField(
+              style: TextStyle(color: Colors.white),
               controller: _emailField,
               decoration: const InputDecoration(
                 hintText: "something@email.com",
@@ -35,7 +42,12 @@ class _AuthenticationState extends State<Authentication> {
                 ),
               ),
             ),
-            TextFormField(
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height / 35),
+            Container(
+              width : MediaQuery.of(context).size.width / 1.3,
+              child: TextFormField(
+              style: TextStyle(color: Colors.white),
               controller: _passwordField,
               obscureText: true,
               decoration: const InputDecoration(
@@ -49,6 +61,8 @@ class _AuthenticationState extends State<Authentication> {
                 ),
               ),
             ),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height / 35),
             Container(
               width: MediaQuery.of(context).size.width / 1.4,
               height: 45,
@@ -57,10 +71,16 @@ class _AuthenticationState extends State<Authentication> {
                 color: Colors.white,
               ),
               child: MaterialButton(
-                onPressed: (){},
+                onPressed: () async {
+                  bool shouldNavigate = await register(_emailField.text, _passwordField.text);
+                  if(shouldNavigate){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const HomeView()));
+                  }
+                },
                 child: const Text("S'inscrire"),
               ),
             ),
+            SizedBox(height: MediaQuery.of(context).size.height / 35),
             Container(
               width: MediaQuery.of(context).size.width / 1.4,
               height: 45,
@@ -69,7 +89,12 @@ class _AuthenticationState extends State<Authentication> {
                 color: Colors.white,
               ),
               child: MaterialButton(
-                onPressed: (){},
+                 onPressed: () async {
+                  bool shouldNavigate = await signIn(_emailField.text, _passwordField.text);
+                  if(shouldNavigate){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const HomeView()));
+                  }
+                },
                 child: const Text("Se Connecter"),
               ),
             ),
